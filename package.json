@@ -1,0 +1,49 @@
+{
+  "name": "@wolimp/tokenary",
+  "version": "0.1.0",
+  "description": "Compile and apply reusable token replacements.",
+  "license": "Apache-2.0",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.mjs",
+      "require": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rollup --config rollup.config.mjs",
+    "test": "node --test",
+    "test:dist": "node scripts/verify-build.mjs",
+    "prepack": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "tokens",
+    "replace",
+    "template",
+    "i18n"
+  ],
+  "unpkg": "./dist/tokenary.min.js",
+  "jsdelivr": "./dist/tokenary.min.js",
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-terser": "^1.0.0",
+    "acorn": "^8.15.0",
+    "rollup": "^4.52.3"
+  }
+}

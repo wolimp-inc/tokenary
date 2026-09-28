@@ -1,0 +1,76 @@
+# @wolimp/tokenary
+
+Compila mapas de tokens em funções de substituição reutilizáveis. O pacote não
+possui dependências e pode ser usado diretamente em projetos Node.js.
+
+## Instalação
+
+```bash
+npm install @wolimp/tokenary
+```
+
+## Uso
+
+```js
+const { compile, replace, replaceOneShot } = require('@wolimp/tokenary');
+
+const message = await replaceOneShot({
+  source: 'Olá, {{name}}!',
+  pairsMap: { name: 'Ada' },
+  keyMask: '{{?}}'
+});
+
+const compiledReplacer = await compile({
+  pairsMap: { name: 'Ada', language: 'JavaScript' },
+  keyMask: '{{?}}'
+});
+
+const first = await replace({
+  source: '{{name}} usa {{language}}.',
+  compiledReplacer
+});
+
+const second = compiledReplacer('{{language}} também pode ser rápido.');
+```
+
+Também é possível usar imports ES modules:
+
+```js
+import { compile, replace, replaceOneShot } from '@wolimp/tokenary';
+```
+
+O caractere `?` em `keyMask` representa a chave do `pairsMap`. Em
+`replaceMask`, ele representa o valor convertido para string:
+
+```js
+await replaceOneShot({
+  source: ':status',
+  pairsMap: { status: 'ready' },
+  keyMask: ':?',
+  replaceMask: '[?]'
+}); // "[ready]"
+```
+
+Para migrações a partir do adaptador original, os aliases `compileAdapter`,
+`replaceAdapter` e `replaceOneShotAdapter` também estão disponíveis.
+
+## Build
+
+```bash
+npm run build
+```
+
+O build gera quatro bundles UMD, utilizáveis por CommonJS ou diretamente no
+navegador pelo global `Tokenary`:
+
+| Arquivo | Destino |
+| --- | --- |
+| `dist/tokenary.js` | Versão moderna de desenvolvimento |
+| `dist/tokenary.min.js` | Versão moderna minificada |
+| `dist/tokenary.esm.js` | Versão moderna ES module |
+| `dist/tokenary.legacy.js` | Versão ES5 de desenvolvimento |
+| `dist/tokenary.legacy.min.js` | Versão ES5 minificada |
+
+A versão legacy usa somente sintaxe ES5. Como a API pública é assíncrona, um
+polyfill de `Promise` ainda é necessário em navegadores que não implementam
+essa API nativamente.
