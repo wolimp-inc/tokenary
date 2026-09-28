@@ -1,4 +1,4 @@
-/*! @wolimp/tokenary v0.1.0 | Apache-2.0 */
+/*! @wolimp/tokenary v0.1.0-beta.2 | Apache-2.0 */
 function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }

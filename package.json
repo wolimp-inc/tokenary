@@ -1,8 +1,17 @@
 {
   "name": "@wolimp/tokenary",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.2",
   "description": "Compile and apply reusable token replacements.",
+  "author": "Pec Rodrigues",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolimp-inc/tokenary.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wolimp-inc/tokenary/issues"
+  },
+  "homepage": "https://github.com/wolimp-inc/tokenary#readme",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "exports": {
@@ -21,10 +30,14 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "rollup --config rollup.config.mjs",
+    "build": "rollup --config scripts/rollup.config.mjs",
     "test": "node --test",
     "test:dist": "node scripts/verify-build.mjs",
-    "prepack": "npm run build"
+    "prepack": "npm run build && npm run test:dist",
+    "prepublishOnly": "npm test"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "engines": {
     "node": ">=18"

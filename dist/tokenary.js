@@ -1,4 +1,4 @@
-/*! @wolimp/tokenary v0.1.0 | Apache-2.0 */
+/*! @wolimp/tokenary v0.1.0-beta.2 | Apache-2.0 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :

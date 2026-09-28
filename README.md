@@ -6,8 +6,10 @@ possui dependências e pode ser usado diretamente em projetos Node.js.
 ## Instalação
 
 ```bash
-npm install @wolimp/tokenary
+npm install @wolimp/tokenary@beta
 ```
+
+Durante o prerelease, o pacote é distribuído pela tag `beta`.
 
 ## Uso
 
@@ -57,8 +59,8 @@ replaceOneShot({
 npm run build
 ```
 
-O build gera quatro bundles UMD, utilizáveis por CommonJS ou diretamente no
-navegador pelo global `Tokenary`:
+O build gera cinco bundles, incluindo variantes UMD utilizáveis por CommonJS
+ou diretamente no navegador pelo global `Tokenary`:
 
 | Arquivo | Destino |
 | --- | --- |
@@ -70,3 +72,7 @@ navegador pelo global `Tokenary`:
 
 A versão legacy usa somente sintaxe ES5. A API pública é síncrona e não
 depende de `Promise`.
+
+## Author
+
+[Pec Rodrigues](https://github.com/pecrodrigues)
