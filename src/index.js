@@ -18,9 +18,9 @@ const applyMask = (mask, value) => mask.indexOf('?') === -1
  * @param {Record<string, unknown>} options.pairsMap
  * @param {string} [options.keyMask='?']
  * @param {string} [options.replaceMask='?']
- * @returns {Promise<(source: unknown) => string>}
+ * @returns {(source: unknown) => string}
  */
-async function compile({ pairsMap, keyMask = '?', replaceMask = '?' } = {}) {
+function compile({ pairsMap, keyMask = '?', replaceMask = '?' } = {}) {
   if (!pairsMap || typeof pairsMap !== 'object' || Array.isArray(pairsMap)) {
     return identity;
   }
@@ -54,6 +54,8 @@ async function compile({ pairsMap, keyMask = '?', replaceMask = '?' } = {}) {
     return identity;
   }
 
+  tokens.sort((a, b) => b.length - a.length);
+
   const expression = new RegExp(
     tokens.map(escapeRegex).join('|'),
     'g'
@@ -73,15 +75,15 @@ async function compile({ pairsMap, keyMask = '?', replaceMask = '?' } = {}) {
  * @param {Record<string, unknown>} options.pairsMap
  * @param {string} [options.keyMask='?']
  * @param {string} [options.replaceMask='?']
- * @returns {Promise<string>}
+ * @returns {string}
  */
-async function replaceOneShot({
+function replaceOneShot({
   source,
   pairsMap,
   keyMask = '?',
   replaceMask = '?'
 } = {}) {
-  const compiledReplacer = await compile({ pairsMap, keyMask, replaceMask });
+  const compiledReplacer = compile({ pairsMap, keyMask, replaceMask });
   return compiledReplacer(source);
 }
 
@@ -91,9 +93,9 @@ async function replaceOneShot({
  * @param {object} options
  * @param {unknown} options.source
  * @param {unknown} options.compiledReplacer
- * @returns {Promise<string>}
+ * @returns {string}
  */
-async function replace({ source, compiledReplacer } = {}) {
+function replace({ source, compiledReplacer } = {}) {
   const normalizedSource = identity(source);
   if (typeof compiledReplacer !== 'function') {
     return normalizedSource;
@@ -105,8 +107,5 @@ async function replace({ source, compiledReplacer } = {}) {
 module.exports = Object.freeze({
   compile,
   replace,
-  replaceOneShot,
-  compileAdapter: compile,
-  replaceAdapter: replace,
-  replaceOneShotAdapter: replaceOneShot
+  replaceOneShot
 });

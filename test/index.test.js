@@ -4,8 +4,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const tokenary = require('../src');
 
-test('replaces every token in one shot', async () => {
-  const result = await tokenary.replaceOneShot({
+test('replaces every token in one shot', () => {
+  const result = tokenary.replaceOneShot({
     source: 'Hello, {{name}}! You have {{count}} messages.',
     pairsMap: { name: 'Ada', count: 3 },
     keyMask: '{{?}}'
@@ -14,33 +14,33 @@ test('replaces every token in one shot', async () => {
   assert.equal(result, 'Hello, Ada! You have 3 messages.');
 });
 
-test('reuses a compiled replacer', async () => {
-  const compiledReplacer = await tokenary.compile({
+test('reuses a compiled replacer', () => {
+  const compiledReplacer = tokenary.compile({
     pairsMap: { status: 'ready' },
     keyMask: ':?',
     replaceMask: '[?]'
   });
 
   assert.equal(
-    await tokenary.replace({ source: 'Service is :status.', compiledReplacer }),
+    tokenary.replace({ source: 'Service is :status.', compiledReplacer }),
     'Service is [ready].'
   );
   assert.equal(compiledReplacer(':status / :status'), '[ready] / [ready]');
 });
 
-test('treats invalid maps and replacers as identity operations', async () => {
+test('treats invalid maps and replacers as identity operations', () => {
   assert.equal(
-    await tokenary.replaceOneShot({ source: null, pairsMap: [] }),
+    tokenary.replaceOneShot({ source: null, pairsMap: [] }),
     ''
   );
   assert.equal(
-    await tokenary.replace({ source: 42, compiledReplacer: null }),
+    tokenary.replace({ source: 42, compiledReplacer: null }),
     '42'
   );
 });
 
-test('handles regex characters in tokens literally', async () => {
-  const result = await tokenary.replaceOneShot({
+test('handles regex characters in tokens literally', () => {
+  const result = tokenary.replaceOneShot({
     source: '$price + $price',
     pairsMap: { price: 10 },
     keyMask: '$?'
@@ -49,10 +49,20 @@ test('handles regex characters in tokens literally', async () => {
   assert.equal(result, '10 + 10');
 });
 
-test('keeps the original adapter names as aliases', () => {
-  assert.equal(tokenary.compileAdapter, tokenary.compile);
-  assert.equal(tokenary.replaceAdapter, tokenary.replace);
-  assert.equal(tokenary.replaceOneShotAdapter, tokenary.replaceOneShot);
+test('matches longer overlapping tokens first', () => {
+  const result = tokenary.replaceOneShot({
+    source: 'foobar foo',
+    pairsMap: { foo: 'A', foobar: 'B' }
+  });
+
+  assert.equal(result, 'B A');
+});
+
+test('exposes only the frozen public API', () => {
+  assert.deepEqual(
+    Object.keys(tokenary),
+    ['compile', 'replace', 'replaceOneShot']
+  );
   assert.equal(Object.isFrozen(tokenary), true);
 });
 

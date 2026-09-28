@@ -3,19 +3,13 @@ import tokenary from './index.js';
 const {
   compile,
   replace,
-  replaceOneShot,
-  compileAdapter,
-  replaceAdapter,
-  replaceOneShotAdapter
+  replaceOneShot
 } = tokenary;
 
 export {
   compile,
   replace,
-  replaceOneShot,
-  compileAdapter,
-  replaceAdapter,
-  replaceOneShotAdapter
+  replaceOneShot
 };
 
 export default tokenary;

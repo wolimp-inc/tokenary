@@ -14,18 +14,18 @@ npm install @wolimp/tokenary
 ```js
 const { compile, replace, replaceOneShot } = require('@wolimp/tokenary');
 
-const message = await replaceOneShot({
+const message = replaceOneShot({
   source: 'Olá, {{name}}!',
   pairsMap: { name: 'Ada' },
   keyMask: '{{?}}'
 });
 
-const compiledReplacer = await compile({
+const compiledReplacer = compile({
   pairsMap: { name: 'Ada', language: 'JavaScript' },
   keyMask: '{{?}}'
 });
 
-const first = await replace({
+const first = replace({
   source: '{{name}} usa {{language}}.',
   compiledReplacer
 });
@@ -43,16 +43,13 @@ O caractere `?` em `keyMask` representa a chave do `pairsMap`. Em
 `replaceMask`, ele representa o valor convertido para string:
 
 ```js
-await replaceOneShot({
+replaceOneShot({
   source: ':status',
   pairsMap: { status: 'ready' },
   keyMask: ':?',
   replaceMask: '[?]'
 }); // "[ready]"
 ```
-
-Para migrações a partir do adaptador original, os aliases `compileAdapter`,
-`replaceAdapter` e `replaceOneShotAdapter` também estão disponíveis.
 
 ## Build
 
@@ -71,6 +68,5 @@ navegador pelo global `Tokenary`:
 | `dist/tokenary.legacy.js` | Versão ES5 de desenvolvimento |
 | `dist/tokenary.legacy.min.js` | Versão ES5 minificada |
 
-A versão legacy usa somente sintaxe ES5. Como a API pública é assíncrona, um
-polyfill de `Promise` ainda é necessário em navegadores que não implementam
-essa API nativamente.
+A versão legacy usa somente sintaxe ES5. A API pública é síncrona e não
+depende de `Promise`.

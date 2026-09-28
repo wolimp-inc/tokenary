@@ -23,13 +23,24 @@ for (const filename of variants) {
   sizes.set(filename, Buffer.byteLength(source));
 
   const tokenary = require(fileURLToPath(url));
-  const result = await tokenary.replaceOneShot({
+  const result = tokenary.replaceOneShot({
     source: 'Hello, {{name}}!',
     pairsMap: { name: 'Ada' },
     keyMask: '{{?}}'
   });
 
   assert.equal(result, 'Hello, Ada!', `${filename} produced an invalid result`);
+
+  const overlappingResult = tokenary.replaceOneShot({
+    source: 'foobar foo',
+    pairsMap: { foo: 'A', foobar: 'B' }
+  });
+
+  assert.equal(
+    overlappingResult,
+    'B A',
+    `${filename} matched overlapping tokens in the wrong order`
+  );
 }
 
 const esmUrl = new URL('../dist/tokenary.esm.js', import.meta.url);
@@ -38,13 +49,21 @@ parse(esmSource, { ecmaVersion: 'latest', sourceType: 'module' });
 
 const esmDataUrl = `data:text/javascript;base64,${Buffer.from(esmSource).toString('base64')}`;
 const esmTokenary = await import(esmDataUrl);
-const esmResult = await esmTokenary.replaceOneShot({
+const esmResult = esmTokenary.replaceOneShot({
   source: 'Hello, {{name}}!',
   pairsMap: { name: 'Ada' },
   keyMask: '{{?}}'
 });
 
 assert.equal(esmResult, 'Hello, Ada!', 'tokenary.esm.js produced an invalid result');
+assert.equal(
+  esmTokenary.replaceOneShot({
+    source: 'foobar foo',
+    pairsMap: { foo: 'A', foobar: 'B' }
+  }),
+  'B A',
+  'tokenary.esm.js matched overlapping tokens in the wrong order'
+);
 assert.equal(esmTokenary.default.compile, esmTokenary.compile);
 
 assert.ok(

@@ -17,21 +17,14 @@ export interface ReplaceOptions {
   compiledReplacer: CompiledReplacer;
 }
 
-export function compile(options: CompileOptions): Promise<CompiledReplacer>;
-export function replace(options: ReplaceOptions): Promise<string>;
-export function replaceOneShot(options: ReplaceOneShotOptions): Promise<string>;
-
-export { compile as compileAdapter };
-export { replace as replaceAdapter };
-export { replaceOneShot as replaceOneShotAdapter };
+export function compile(options: CompileOptions): CompiledReplacer;
+export function replace(options: ReplaceOptions): string;
+export function replaceOneShot(options: ReplaceOneShotOptions): string;
 
 declare const tokenary: Readonly<{
   compile: typeof compile;
   replace: typeof replace;
   replaceOneShot: typeof replaceOneShot;
-  compileAdapter: typeof compile;
-  replaceAdapter: typeof replace;
-  replaceOneShotAdapter: typeof replaceOneShot;
 }>;
 
 export default tokenary;
